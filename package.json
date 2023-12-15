@@ -1,12 +1,36 @@
 {
-  "name": "key-exchange",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "key-exchange",
+	"version": "0.0.1",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsnd -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn --exit-child src/main/server.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/jsonwebtoken": "^9.0.5",
+		"@types/node": "^20.10.4",
+		"@types/typescript": "^2.0.0",
+		"@typescript-eslint/eslint-plugin": "^6.14.0",
+		"@typescript-eslint/parser": "^6.14.0",
+		"eslint": "^8.55.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-config-xo": "^0.43.1",
+		"eslint-config-xo-typescript": "^1.0.1",
+		"eslint-plugin-prettier": "^5.0.1",
+		"prettier": "^3.1.1",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.3.3"
+	},
+	"dependencies": {
+		"dotenv": "^16.3.1",
+		"jsonwebtoken": "^9.0.2",
+		"mongodb": "^6.3.0",
+		"nulla-router": "^0.1.6",
+		"tsconfig-paths": "^4.2.0",
+		"zod": "^3.22.4",
+		"zod-error": "^1.5.0"
+	}
 }

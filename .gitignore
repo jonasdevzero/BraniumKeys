@@ -1,0 +1,12 @@
+node_modules
+dist
+
+.env
+
+ssl/*
+!ssl/.gitkeep
+
+temp/*
+!temp/uploads
+temp/uploads/*
+!temp/uploads/.gitkeep

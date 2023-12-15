@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: key_exchange
+    ports:
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
+    # volumes:
+    #   - ./certs/mongodb:/certs
+    #   - ./config/mongod.conf:/etc/mongod.conf
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MONGO_INITDB_DATABASE=key-exchange
