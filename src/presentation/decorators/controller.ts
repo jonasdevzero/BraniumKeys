@@ -1,21 +1,13 @@
 import { injectable } from '@container';
 import { response } from '../helpers';
-import {
-	Controller,
-	HttpRequest,
-	HttpResponse,
-	Middleware,
-} from '../protocols';
+import { Controller, HttpRequest, HttpResponse, Middleware } from '../protocols';
 import { kControllerMiddlewares } from './middlewares';
 
 type Class<T> = { new (...args: any[]): T };
 
 export function controller() {
-	return function decorator<T extends Class<Controller>>(
-		constructor: T,
-	): T | void {
-		let middlewares: Middleware[] =
-			(constructor as any)[kControllerMiddlewares] || [];
+	return function decorator<T extends Class<Controller>>(constructor: T): T | void {
+		let middlewares: Middleware[] = (constructor as any)[kControllerMiddlewares] || [];
 
 		@injectable()
 		class InjectableController extends constructor {

@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import './config/valid';
 import '@container/register';
-import https from 'node:https';
-import fs from 'node:fs';
-import { router } from './routes';
 import { ENV } from './config/env';
-import { connect } from '@infra/db/mongodb/connection';
+import fs from 'node:fs';
+import https from 'node:https';
+import { router } from './routes';
+import { connectDatabase } from '@infra/db/mongodb/connection';
 
 const port = process.env.PORT || 5000;
 
@@ -15,7 +15,7 @@ const options: https.ServerOptions = {
 };
 
 const server = https.createServer(options, router.lookup.bind(router));
-connect();
+connectDatabase();
 
 server.listen(port, () => {
 	console.log('[Key Exchange] server is running on port ' + port);

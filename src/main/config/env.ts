@@ -11,7 +11,12 @@ const envSchema = z.object({
 
 	DATABASE_URL: z.string(),
 
+	CACHE_DRIVER: z.enum(['fake', 'ioredis']),
+	REDIS_URL: z.string(),
+
 	JWT_SECRET: z.string(),
+
+	ENCRYPT_PASSWORD_HASH: z.string(),
 });
 
 export const ENV = envSchema.parse(process.env);

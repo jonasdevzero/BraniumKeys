@@ -6,9 +6,13 @@ export class StorageUserKeysMongodbRepository implements StorageUserKeysReposito
 	async storage(data: StorageUserKeysDTO): Promise<void> {
 		const { userId, ...rest } = data;
 
+		const date = new Date();
+
 		await getCollection('key-pair').insertOne({
 			id: userId,
 			...rest,
+			createdAt: date,
+			updatedAt: date,
 		});
 	}
 }

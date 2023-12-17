@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb';
 
 let client: MongoClient;
 
-export async function connect() {
+export async function connectDatabase() {
 	client = await new MongoClient(ENV.DATABASE_URL).connect();
 	console.log('database connected');
 }

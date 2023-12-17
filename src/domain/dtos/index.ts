@@ -1,1 +1,2 @@
-export * from "./StorageUserKeysDTO";
+export * from './StorageUserKeysDTO';
+export * from './GenerateKeyPairDTO';

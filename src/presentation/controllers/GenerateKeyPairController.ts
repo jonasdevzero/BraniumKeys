@@ -3,9 +3,10 @@ import { inject } from '@main/container';
 import { controller, middlewares, route } from '@presentation/decorators';
 import { response } from '@presentation/helpers';
 import type { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
+import { GenerateKeyPairValidator } from '@presentation/validators/GenerateKeyPairValidator';
 
 @controller()
-@middlewares('EnsureAuthenticated')
+@middlewares(GenerateKeyPairValidator)
 @route.post('key', '/generate')
 export class GenerateKeyPairController implements Controller {
 	constructor(
@@ -14,9 +15,9 @@ export class GenerateKeyPairController implements Controller {
 	) {}
 
 	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-		const { id } = httpRequest.user;
+		const data = httpRequest.body;
 
-		const result = await this.generateKeyPair.generate(id);
+		const result = await this.generateKeyPair.generate(data);
 
 		return response.created(result);
 	}

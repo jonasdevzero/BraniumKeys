@@ -1,3 +1,3 @@
 export const routeModules = {
-	key: "/key",
+	key: '/key-pair',
 };

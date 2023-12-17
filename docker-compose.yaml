@@ -3,7 +3,7 @@ version: '3'
 services:
   mongodb:
     image: mongo
-    container_name: key_exchange
+    container_name: mongo-key-exchange
     ports:
       - '${DATABASE_PORT}:${DATABASE_PORT}'
     # volumes:
@@ -13,3 +13,20 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
       - MONGO_INITDB_DATABASE=key-exchange
+  redis:
+    image: 'redis:latest'
+    container_name: redis-key-exchange
+    networks:
+      - internal
+    ports:
+      - '${REDIS_PORT}:6379'
+    volumes:
+      - cache:/data
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  cache:
+    driver: local

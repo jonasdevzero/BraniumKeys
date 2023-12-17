@@ -1,1 +1,1 @@
-export * from "./generate-key-pair";
+export * from './generate-key-pair';

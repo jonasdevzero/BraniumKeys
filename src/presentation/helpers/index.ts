@@ -1,2 +1,2 @@
-export * from "./response";
-export * from "./getRequestData";
+export * from './response';
+export * from './getRequestData';

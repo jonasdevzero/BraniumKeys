@@ -7,6 +7,8 @@
 		"nulla",
 		"postgres",
 		"tsnd",
+		"unshuffle",
+		"unshuffled",
 		"usecase"
 	]
 }
