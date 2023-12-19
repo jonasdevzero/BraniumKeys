@@ -1,5 +1,5 @@
 import { UserKeyPair } from '@domain/models';
 
-export interface FindUserKeyPairRepository {
+export interface FindKeyPairRepository {
 	find(userId: string): Promise<UserKeyPair | null>;
 }

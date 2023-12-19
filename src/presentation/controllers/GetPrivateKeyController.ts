@@ -16,11 +16,11 @@ export class GetPrivateKeyController implements Controller {
 	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
 		const { authorization } = httpRequest.headers;
 
-		if (!authorization) throw new UnauthorizedError('Invalid token');
+		if (!authorization) throw new UnauthorizedError('Unauthorized');
 
 		const [type, token] = authorization.split(' ');
 
-		if (type !== 'Basic') throw new UnauthorizedError('Invalid token');
+		if (type !== 'Basic') throw new UnauthorizedError('Unauthorized');
 
 		const [userId, password] = Buffer.from(token, 'base64').toString('utf-8').split(':');
 

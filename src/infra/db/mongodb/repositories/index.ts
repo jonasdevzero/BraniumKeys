@@ -1,2 +1,3 @@
-export * from './StorageUserKeysMongodbRepository';
-export * from './FindUserKeyPairMongodbRepository';
+export * from './StorageKeyPairMongodbRepository';
+export * from './FindKeyPairMongodbRepository';
+export * from './EditKeyPairMongodbRepository';

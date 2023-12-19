@@ -1,6 +1,9 @@
 import { generateKeyPair } from '@data/helpers';
-import { PasswordEncrypt, StorageUserKeysRepository } from '@data/protocols';
-import { FindUserKeyPairRepository } from '@data/protocols/db/FindUserKeyPairRepository';
+import {
+	PasswordEncrypt,
+	StorageKeyPairRepository,
+	FindKeyPairRepository,
+} from '@data/protocols';
 import { GenerateKeyPairDTO } from '@domain/dtos';
 import { KeyPair } from '@domain/types';
 import { GenerateKeyPair } from '@domain/use-cases/GenerateKeyPair';
@@ -10,14 +13,14 @@ import { BadRequestError } from '@presentation/errors';
 @injectable()
 export class DbGenerateKeyPair implements GenerateKeyPair {
 	constructor(
-		@inject('FindUserKeyPairRepository')
-		private readonly findUserKeyPairRepository: FindUserKeyPairRepository,
+		@inject('FindKeyPairRepository')
+		private readonly findUserKeyPairRepository: FindKeyPairRepository,
 
 		@inject('PasswordEncrypt')
 		private passwordEncrypt: PasswordEncrypt,
 
-		@inject('StorageUserKeysRepository')
-		private readonly storageUserKeysRepository: StorageUserKeysRepository,
+		@inject('StorageKeyPairRepository')
+		private readonly storageKeyPairRepository: StorageKeyPairRepository,
 	) {}
 
 	async generate(data: GenerateKeyPairDTO): Promise<KeyPair> {
@@ -36,7 +39,7 @@ export class DbGenerateKeyPair implements GenerateKeyPair {
 			password,
 		);
 
-		await this.storageUserKeysRepository.storage({
+		await this.storageKeyPairRepository.storage({
 			userId,
 			publicKey: keyPair.publicKey,
 			privateKey: encryptedPrivateKey,

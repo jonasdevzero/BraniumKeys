@@ -1,5 +1,4 @@
-import { GetCache, StoreCache } from '@data/protocols';
-import { FindUserKeyPairRepository } from '@data/protocols/db/FindUserKeyPairRepository';
+import { FindKeyPairRepository, GetCache, StoreCache } from '@data/protocols';
 import { GetPublicKey } from '@domain/use-cases/GetPublicKey';
 import { inject, injectable } from '@main/container';
 import { NotFoundError } from '@presentation/errors';
@@ -13,8 +12,8 @@ export class DbGetPublicKey implements GetPublicKey {
 		@inject('StoreCache')
 		private readonly storeCache: StoreCache,
 
-		@inject('FindUserKeyPairRepository')
-		private readonly findUserKeyPairRepository: FindUserKeyPairRepository,
+		@inject('FindKeyPairRepository')
+		private readonly findKeyPairRepository: FindKeyPairRepository,
 	) {}
 
 	async get(userId: string): Promise<string> {
@@ -22,7 +21,7 @@ export class DbGetPublicKey implements GetPublicKey {
 
 		if (cachedPublicKey) return cachedPublicKey;
 
-		const keyPair = await this.findUserKeyPairRepository.find(userId);
+		const keyPair = await this.findKeyPairRepository.find(userId);
 
 		if (!keyPair) {
 			throw new NotFoundError('user');

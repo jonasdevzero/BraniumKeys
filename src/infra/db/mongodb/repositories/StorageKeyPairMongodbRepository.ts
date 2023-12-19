@@ -1,8 +1,8 @@
-import { StorageUserKeysRepository } from '@data/protocols';
+import { StorageKeyPairRepository } from '@data/protocols';
 import { StorageUserKeysDTO } from '@domain/dtos';
 import { getCollection } from '../connection';
 
-export class StorageUserKeysMongodbRepository implements StorageUserKeysRepository {
+export class StorageKeyPairMongodbRepository implements StorageKeyPairRepository {
 	async storage(data: StorageUserKeysDTO): Promise<void> {
 		const { userId, ...rest } = data;
 

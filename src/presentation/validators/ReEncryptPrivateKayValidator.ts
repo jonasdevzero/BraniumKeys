@@ -4,12 +4,13 @@ import { HttpRequest, Middleware } from '@presentation/protocols';
 import { z } from 'zod';
 
 @validator
-export class GenerateKeyPairValidator implements Middleware {
+export class ReEncryptPrivateKayValidator implements Middleware {
 	private readonly schema = z.object({
 		body: z
 			.object({
 				userId: z.string().uuid(),
-				password: passwordSchema,
+				oldPassword: passwordSchema,
+				newPassword: passwordSchema,
 			})
 			.required()
 			.strict(),

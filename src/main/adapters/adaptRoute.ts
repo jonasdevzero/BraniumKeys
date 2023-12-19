@@ -22,6 +22,8 @@ async function loadRequestBody(req: IncomingMessage): Promise<any> {
 
 export const adaptRoute = (controller: Controller) => {
 	return async (request: IncomingMessage, response: ServerResponse, params: any) => {
+		const method = request.method as string;
+
 		const httpRequest: HttpRequest = {
 			body: {},
 			query: {},
@@ -30,7 +32,7 @@ export const adaptRoute = (controller: Controller) => {
 			user: { id: '' },
 		};
 
-		if (request.method === 'POST') {
+		if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase())) {
 			httpRequest.body = await loadRequestBody(request);
 		}
 

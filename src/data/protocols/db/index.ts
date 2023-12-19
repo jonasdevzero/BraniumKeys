@@ -1,1 +1,3 @@
-export * from "./StorageUserKeysRepository";
+export * from './StorageKeyPairRepository';
+export * from './EditKeyPairRepository';
+export * from './FindKeyPairRepository';
