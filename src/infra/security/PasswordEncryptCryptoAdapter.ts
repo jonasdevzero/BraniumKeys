@@ -1,42 +1,40 @@
 import { PasswordEncrypt } from '@data/protocols/security';
 import { ENV } from '@main/config/env';
-import * as argon2 from 'argon2';
 import * as crypto from 'crypto';
 import { promisify } from 'util';
+import * as zlib from 'zlib';
 import { flattenArraySize, shuffleArray } from './helpers';
 
+const deflate = promisify(zlib.deflate);
 const pbkdf2 = promisify(crypto.pbkdf2);
 
 export class PasswordEncryptCryptoAdapter implements PasswordEncrypt {
 	async encrypt(data: string, password: string): Promise<string> {
+		const seed = password + ENV.ENCRYPT_PASSWORD_HASH;
+
 		const salt = crypto.randomBytes(16);
+		const key = await pbkdf2(seed, salt, 10000, 32, 'sha512');
 
-		const hash = await argon2.hash(password, { salt });
-		const key = await pbkdf2(hash, ENV.ENCRYPT_PASSWORD_HASH, 1, 32, 'sha256');
-
-		const iv = crypto.randomBytes(12);
+		const iv = crypto.randomBytes(16);
 		const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
 
-		const encryptedBuffer = Buffer.concat([cipher.update(data, 'utf-8'), cipher.final()]);
+		const encrypted = Buffer.concat([cipher.update(data, 'utf-8'), cipher.final()]);
 
 		const tag = cipher.getAuthTag();
 
-		const blob = [
+		const blobArray = [
 			salt.toString('hex'),
 			iv.toString('hex'),
 			tag.toString('hex'),
-			encryptedBuffer.toString('hex'),
+			encrypted.toString('hex'),
 		];
 
-		const flattenedBlob = flattenArraySize(blob);
+		const flattenedBlob = flattenArraySize(blobArray);
+		const shuffledBlob = shuffleArray(flattenedBlob, seed);
+		const blob = Buffer.from(shuffledBlob.join(':'), 'utf-8');
 
-		const shuffledBlob = shuffleArray(
-			flattenedBlob,
-			password + ENV.ENCRYPT_PASSWORD_HASH,
-		);
+		const cipherBlob = await deflate(blob, { level: zlib.constants.Z_MAX_LEVEL });
 
-		const cipherBlob = shuffledBlob.join(':');
-
-		return cipherBlob;
+		return cipherBlob.toString('binary');
 	}
 }

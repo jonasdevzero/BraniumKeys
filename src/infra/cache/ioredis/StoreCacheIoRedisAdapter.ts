@@ -2,10 +2,12 @@ import { StoreCache } from '@data/protocols/cache';
 import { ioredis } from './connection';
 
 export class StoreCacheIoRedisAdapter implements StoreCache {
-	private readonly cacheTtl = 60 * 60 * 6; // 6 hours
+	private readonly cacheTtl = 60 * 10; // 10 minutes
 
 	async store(key: string, data: string | number | Buffer): Promise<void> {
-		await ioredis.set(key, data);
-		await ioredis.expire(key, this.cacheTtl);
+		try {
+			await ioredis.set(key, data);
+			await ioredis.expire(key, this.cacheTtl);
+		} catch (error) {}
 	}
 }

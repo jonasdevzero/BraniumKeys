@@ -1,10 +1,9 @@
 export function shuffleArray<T>(array: T[], seed: string): T[] {
-	const random = createRandom(seed);
-
 	const shuffledArray = array.slice();
 
-	for (let i = shuffledArray.length - 1; i > 0; i--) {
-		const j = random(i);
+	for (let i = shuffledArray.length - 1; i >= 0; i--) {
+		const j = nextIndex(i, seed, array.length);
+
 		[shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
 	}
 
@@ -12,32 +11,39 @@ export function shuffleArray<T>(array: T[], seed: string): T[] {
 }
 
 export function unshuffleArray<T>(shuffledArray: T[], seed: string): T[] {
-	const random = createRandom(seed);
-
 	const unshuffledArray = shuffledArray.slice();
 
-	for (let i = unshuffledArray.length - 1; i > 0; i--) {
-		const j = random(i);
+	const indices = generateIndices(shuffledArray.length, seed).reverse();
+
+	for (let i = 0; i <= shuffledArray.length - 1; i++) {
+		const j = indices[i];
+
 		[unshuffledArray[i], unshuffledArray[j]] = [unshuffledArray[j], unshuffledArray[i]];
 	}
 
 	return unshuffledArray;
 }
 
-function createRandom(seed: string) {
-	return (max: number, min: number = 0) =>
-		Math.floor(getSeedHash(seed) * (max - min + 1) + min);
-}
-
-function getSeedHash(seed: string): number {
+function nextIndex(currentIndex: number, seed: string, length: number) {
 	let hash = 0;
-	if (seed.length === 0) return hash;
 
-	for (let i = 0; i < seed.length; i++) {
-		const char = seed.charCodeAt(i);
-		hash = (hash << 5) - hash + char;
+	for (let index = 0; index < seed.length; index++) {
+		const char = seed.charCodeAt(index);
+		hash += char * (currentIndex + 1);
 	}
 
-	// Convert to a value between 0 and 1
-	return (hash & 0x7fffffff) / 0x7fffffff;
+	let normalized = parseFloat(`0.${hash}`);
+
+	return Math.floor(normalized * length);
+}
+
+function generateIndices(length: number, seed: string): number[] {
+	let indices = [];
+
+	for (let i = length - 1; i >= 0; i--) {
+		const j = nextIndex(i, seed, length);
+		indices.push(j);
+	}
+
+	return indices;
 }
