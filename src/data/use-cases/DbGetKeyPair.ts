@@ -1,11 +1,12 @@
 import { FindKeyPairRepository, PasswordDecrypt } from '@data/protocols';
 import { GetPrivateKeyDTO } from '@domain/dtos';
-import { GetPrivateKey } from '@domain/use-cases/GetPrivateKey';
+import { KeyPair } from '@domain/types';
+import { GetKeyPair } from '@domain/use-cases/GetPrivateKey';
 import { inject, injectable } from '@main/container';
-import { UnauthorizedError } from '@presentation/errors';
+import { NotFoundError, UnauthorizedError } from '@presentation/errors';
 
 @injectable()
-export class DbGetPrivateKey implements GetPrivateKey {
+export class DbGetKeyPair implements GetKeyPair {
 	constructor(
 		@inject('FindKeyPairRepository')
 		private readonly findKeyPairRepository: FindKeyPairRepository,
@@ -14,13 +15,13 @@ export class DbGetPrivateKey implements GetPrivateKey {
 		private readonly passwordDecrypt: PasswordDecrypt,
 	) {}
 
-	async get(data: GetPrivateKeyDTO): Promise<string> {
+	async get(data: GetPrivateKeyDTO): Promise<KeyPair> {
 		const { userId, password } = data;
 
 		const keyPair = await this.findKeyPairRepository.find(userId);
 
 		if (!keyPair) {
-			throw new UnauthorizedError('Unauthorized');
+			throw new NotFoundError('key pair');
 		}
 
 		let privateKey = '';
@@ -31,6 +32,6 @@ export class DbGetPrivateKey implements GetPrivateKey {
 			throw new UnauthorizedError('Unauthorized');
 		}
 
-		return privateKey;
+		return { publicKey: keyPair.publicKey, privateKey };
 	}
 }

@@ -1,4 +1,4 @@
-import { GetPrivateKey } from '@domain/use-cases/GetPrivateKey';
+import { GetKeyPair } from '@domain/use-cases/GetPrivateKey';
 import { inject } from '@main/container';
 import { controller, route } from '@presentation/decorators';
 import { UnauthorizedError } from '@presentation/errors';
@@ -6,11 +6,11 @@ import { response } from '@presentation/helpers';
 import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
 
 @controller()
-@route.get('key', '/private')
-export class GetPrivateKeyController implements Controller {
+@route.get('key', '/pair')
+export class GetKeyPairController implements Controller {
 	constructor(
-		@inject.usecase('GetPrivateKey')
-		private readonly getPrivateKey: GetPrivateKey,
+		@inject.usecase('GetKeyPair')
+		private readonly getKeyPair: GetKeyPair,
 	) {}
 
 	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -24,7 +24,7 @@ export class GetPrivateKeyController implements Controller {
 
 		const [userId, password] = Buffer.from(token, 'base64').toString('utf-8').split(':');
 
-		const result = await this.getPrivateKey.get({ userId, password });
+		const result = await this.getKeyPair.get({ userId, password });
 
 		return response.ok(result);
 	}

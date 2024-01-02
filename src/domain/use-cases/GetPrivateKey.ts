@@ -1,5 +1,6 @@
 import { GetPrivateKeyDTO } from '@domain/dtos';
+import { KeyPair } from '@domain/types';
 
-export interface GetPrivateKey {
-	get(data: GetPrivateKeyDTO): Promise<string>;
+export interface GetKeyPair {
+	get(data: GetPrivateKeyDTO): Promise<KeyPair>;
 }
