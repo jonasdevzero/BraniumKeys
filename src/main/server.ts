@@ -12,6 +12,7 @@ const port = process.env.PORT || 5000;
 const options: https.ServerOptions = {
 	key: fs.readFileSync(ENV.PRIVATE_KEY),
 	cert: fs.readFileSync(ENV.CERTIFICATE),
+	ca: fs.readFileSync(ENV.CA),
 };
 
 const server = https.createServer(options, router.lookup.bind(router));
