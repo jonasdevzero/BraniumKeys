@@ -38,6 +38,10 @@ export const adaptRoute = (controller: Controller) => {
 
 		const httpResponse = await controller.handle(httpRequest);
 
+		if (typeof httpResponse.body === 'object') {
+			response.setHeader('content-type', 'application/json');
+		}
+
 		response.statusCode = httpResponse.statusCode;
 		response.end(JSON.stringify(httpResponse.body));
 	};
