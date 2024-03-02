@@ -6,7 +6,7 @@ import { response } from '@presentation/helpers';
 import { Controller, HttpRequest, HttpResponse } from '@presentation/protocols';
 
 @controller()
-@route.get('key', '/pair')
+@route.get('key', '/')
 export class GetKeyPairController implements Controller {
 	constructor(
 		@inject.usecase('GetKeyPair')
