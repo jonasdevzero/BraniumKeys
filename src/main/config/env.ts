@@ -6,9 +6,9 @@ const envSchema = z.object({
 
 	PORT: z.string().default('5000').transform(Number),
 
-	PRIVATE_KEY: z.string().default('ssl/key.pem'),
-	CERTIFICATE: z.string().default('ssl/cert.pem'),
-	CA: z.string().default('ssl/ca-cert.pem'),
+	PRIVATE_KEY: z.string().default('certificates/key.pem'),
+	CERTIFICATE: z.string().default('certificates/cert.pem'),
+	CA: z.string().default('certificates/ca-cert.pem'),
 
 	DATABASE_URL: z.string(),
 
